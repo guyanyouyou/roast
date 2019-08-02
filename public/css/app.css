@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+span.validation {
+  color: red;
+  display: block;
+}
+
 /**
  * Foundation for Sites by ZURB
  * Version 6.5.3

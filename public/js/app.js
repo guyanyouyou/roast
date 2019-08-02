@@ -1777,6 +1777,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     userLoadStatus: function userLoadStatus() {
@@ -1961,6 +1962,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1968,18 +1974,96 @@ __webpack_require__.r(__webpack_exports__);
       address: '',
       city: '',
       state: '',
-      zip: ''
+      zip: '',
+      validations: {
+        name: {
+          is_valid: true,
+          text: ''
+        },
+        address: {
+          is_valid: true,
+          text: ''
+        },
+        city: {
+          is_valid: true,
+          text: ''
+        },
+        state: {
+          is_valid: true,
+          text: ''
+        },
+        zip: {
+          is_valid: true,
+          text: ''
+        }
+      }
     };
   },
   methods: {
     submitNewCafe: function submitNewCafe() {
-      $this.$store.dispatch('addCafe', {
-        name: this.name,
-        address: this.address,
-        city: this.city,
-        state: this.state,
-        zip: this.zip
-      });
+      if (this.validateNewCafe()) {
+        this.$store.dispatch('addCafe', {
+          name: this.name,
+          address: this.address,
+          city: this.city,
+          state: this.state,
+          zip: this.zip
+        });
+      }
+    },
+    validateNewCafe: function validateNewCafe() {
+      var validNewCafeForm = true; //确保name字段不为空
+
+      if (this.name.trim() === '') {
+        validNewCafeForm = false;
+        this.validations.name.is_valid = false;
+        this.validations.name.text = '请输入咖啡店的名字';
+      } else {
+        this.validations.name.is_valid = true;
+        this.validations.name.text = '';
+      } // 确保 address 字段不为空
+
+
+      if (this.address.trim() === '') {
+        validNewCafeForm = false;
+        this.validations.address.is_valid = false;
+        this.validations.address.text = '请输入咖啡店的地址!';
+      } else {
+        this.validations.address.is_valid = true;
+        this.validations.address.text = '';
+      } //  确保 city 字段不为空
+
+
+      if (this.city.trim() === '') {
+        validNewCafeForm = false;
+        this.validations.city.is_valid = false;
+        this.validations.city.text = '请输入咖啡店所在城市!';
+      } else {
+        this.validations.city.is_valid = true;
+        this.validations.city.text = '';
+      } //  确保 state 字段不为空
+
+
+      if (this.state.trim() === '') {
+        validNewCafeForm = false;
+        this.validations.state.is_valid = false;
+        this.validations.state.text = '请输入咖啡店所在省份!';
+      } else {
+        this.validations.state.is_valid = true;
+        this.validations.state.text = '';
+      } // 确保 zip 字段不为空且格式正确
+
+
+      if (this.zip.trim() === '' || !this.zip.match(/(^\d{6}$)/)) {
+        validNewCafeForm = false;
+        this.validations.zip.is_valid = false;
+        this.validations.zip.text = '请输入有效的邮编地址!';
+      } else {
+        this.validations.zip.is_valid = true;
+        this.validations.zip.text = '';
+      }
+
+      return validNewCafeForm;
     }
   }
 });
@@ -43872,11 +43956,26 @@ var render = function() {
           "li",
           [
             _c("router-link", { attrs: { to: { name: "cafes" } } }, [
-              _vm._v("\n                    Cafes\n                ")
+              _vm._v("\n                Cafes\n            ")
             ])
           ],
           1
         )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "right" }, [
+        _c("img", {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.userLoadStatus == 2,
+              expression: "userLoadStatus == 2"
+            }
+          ],
+          staticClass: "avatar",
+          attrs: { src: _vm.user.avatar }
+        })
       ])
     ],
     1
@@ -44077,7 +44176,23 @@ var render = function() {
                   }
                 }
               })
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.validations.name.is_valid,
+                    expression: "!validations.name.is_valid"
+                  }
+                ],
+                staticClass: "validation"
+              },
+              [_vm._v(_vm._s(_vm.validations.name.text))]
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
@@ -44103,7 +44218,23 @@ var render = function() {
                   }
                 }
               })
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.validations.address.is_valid,
+                    expression: "!validations.address.is_valid"
+                  }
+                ],
+                staticClass: "validation"
+              },
+              [_vm._v(_vm._s(_vm.validations.address.text))]
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
@@ -44129,7 +44260,23 @@ var render = function() {
                   }
                 }
               })
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.validations.city.is_valid,
+                    expression: "!validations.city.is_valid"
+                  }
+                ],
+                staticClass: "validation"
+              },
+              [_vm._v(_vm._s(_vm.validations.city.text))]
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
@@ -44155,7 +44302,23 @@ var render = function() {
                   }
                 }
               })
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.validations.state.is_valid,
+                    expression: "!validations.state.is_valid"
+                  }
+                ],
+                staticClass: "validation"
+              },
+              [_vm._v(_vm._s(_vm.validations.state.text))]
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
@@ -44181,7 +44344,23 @@ var render = function() {
                   }
                 }
               })
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.validations.zip.is_valid,
+                    expression: "!validations.zip.is_valid"
+                  }
+                ],
+                staticClass: "validation"
+              },
+              [_vm._v(_vm._s(_vm.validations.zip.text))]
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
@@ -44189,7 +44368,6 @@ var render = function() {
               "a",
               {
                 staticClass: "button",
-                attrs: { href: "" },
                 on: {
                   click: function($event) {
                     return _vm.submitNewCafe()
@@ -60096,6 +60274,25 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/api/user.js":
+/*!*****************************************!*\
+  !*** ./resources/assets/js/api/user.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../config */ "./resources/assets/js/config.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  getUser: function getUser() {
+    return axios.get(_config__WEBPACK_IMPORTED_MODULE_0__["ROAST_CONFIG"].API_URL + '/user');
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/assets/js/app.js":
 /*!************************************!*\
   !*** ./resources/assets/js/app.js ***!
@@ -60360,6 +60557,135 @@ var cafes = {
     },
     getCafeAddStatus: function getCafeAddStatus(state) {
       return state.cafeAddStatus;
+    }
+  }
+};
+
+/***/ }),
+
+/***/ "./resources/assets/js/modules/users.js":
+/*!**********************************************!*\
+  !*** ./resources/assets/js/modules/users.js ***!
+  \**********************************************/
+/*! exports provided: users */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "users", function() { return users; });
+/* harmony import */ var _api_user_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api/user.js */ "./resources/assets/js/api/user.js");
+/*
+ |-------------------------------------------------------------------------------
+ | VUEX modules/users.js
+ |-------------------------------------------------------------------------------
+ | The Vuex data store for the users
+ */
+
+var users = {
+  /*
+   Defines the state being monitored for the module.
+   */
+  state: {
+    user: {},
+    userLoadStatus: 0,
+    userUpdateStatus: 0
+  },
+
+  /*
+   Defines the actions used to retrieve the data.
+   */
+  actions: {
+    loadUser: function loadUser(_ref) {
+      var commit = _ref.commit;
+      commit('setUserLoadStatus', 1);
+      _api_user_js__WEBPACK_IMPORTED_MODULE_0__["default"].getUser().then(function (response) {
+        commit('setUser', response.data);
+        commit('setUserLoadStatus', 2);
+      })["catch"](function () {
+        commit('setUser', {});
+        commit('setUserLoadStatus', 3);
+      });
+    },
+
+    /*
+     Edits a user
+     */
+    editUser: function editUser(_ref2, data) {
+      var commit = _ref2.commit,
+          state = _ref2.state,
+          dispatch = _ref2.dispatch;
+      commit('setUserUpdateStatus', 1);
+      _api_user_js__WEBPACK_IMPORTED_MODULE_0__["default"].putUpdateUser(data.public_visibility, data.favorite_coffee, data.flavor_notes, data.city, data.state).then(function (response) {
+        commit('setUserUpdateStatus', 2);
+        dispatch('loadUser');
+      })["catch"](function () {
+        commit('setUserUpdateStatus', 3);
+      });
+    },
+
+    /*
+     Logs out a user and clears the status and user pieces of
+     state.
+     */
+    logoutUser: function logoutUser(_ref3) {
+      var commit = _ref3.commit;
+      commit('setUserLoadStatus', 0);
+      commit('setUser', {});
+    }
+  },
+
+  /*
+   Defines the mutations used
+   */
+  mutations: {
+    /*
+     Sets the user load status
+     */
+    setUserLoadStatus: function setUserLoadStatus(state, status) {
+      state.userLoadStatus = status;
+    },
+
+    /*
+     Sets the user
+     */
+    setUser: function setUser(state, user) {
+      state.user = user;
+    },
+
+    /*
+     Sets the user update status
+     */
+    setUserUpdateStatus: function setUserUpdateStatus(state, status) {
+      state.userUpdateStatus = status;
+    }
+  },
+
+  /*
+   Defines the getters used by the module.
+   */
+  getters: {
+    /*
+     Returns the user load status.
+     */
+    getUserLoadStatus: function getUserLoadStatus(state) {
+      /*return function(){
+          return state.userLoadStatus;
+      }*/
+      return state.userLoadStatus;
+    },
+
+    /*
+     Returns the user.
+     */
+    getUser: function getUser(state) {
+      return state.user;
+    },
+
+    /*
+     Gets the user update status
+     */
+    getUserUpdateStatus: function getUserUpdateStatus(state, status) {
+      return state.userUpdateStatus;
     }
   }
 };
@@ -60784,15 +61110,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_cafes_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/cafes.js */ "./resources/assets/js/modules/cafes.js");
+/* harmony import */ var _modules_users_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/users.js */ "./resources/assets/js/modules/users.js");
 __webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").polyfill();
 
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
+
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
-    cafes: _modules_cafes_js__WEBPACK_IMPORTED_MODULE_2__["cafes"]
+    cafes: _modules_cafes_js__WEBPACK_IMPORTED_MODULE_2__["cafes"],
+    users: _modules_users_js__WEBPACK_IMPORTED_MODULE_3__["users"]
   }
 }));
 
