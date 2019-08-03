@@ -1697,6 +1697,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _config_JS__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../config.JS */ "./resources/assets/js/config.JS");
 //
 //
 //
@@ -1710,6 +1711,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     'latitude': {
@@ -1736,7 +1738,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      markers: []
+      markers: [],
+      infoWindows: []
     };
   },
   mounted: function mounted() {
@@ -1756,14 +1759,33 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     //为所有咖啡店创建点标记
     buildMarkers: function buildMarkers() {
-      //情况点标记数组
-      this.markers = []; //遍历所有开费电并为每个咖啡店创建点标记
+      //初始化点标记数组
+      this.markers = []; //自定义点标记图标
+
+      var image = _config_JS__WEBPACK_IMPORTED_MODULE_0__["ROAST_CONFIG"].APP_URL + '/storage/img/coffee-marker.png';
+      var icon = new AMap.Icon({
+        image: image,
+        //图像URL
+        imageSize: new AMap.Size(19, 33) //设置图标尺寸
+
+      }); //遍历所有咖啡店并为每个咖啡店创建点标记
 
       for (var i = 0; i < this.cafes.length; i++) {
-        //通过高德地图API为每个咖啡店创建点标记并设置经纬度
+        //通过高德地图API为每个咖啡店创建点标记并设置经纬度：
         var marker = new AMap.Marker({
           position: new AMap.LngLat(parseFloat(this.cafes[i].latitude), parseFloat(this.cafes[i].longitude)),
-          title: this.cafes[i].name
+          title: this.cafes[i].name,
+          icon: icon,
+          map: this.map
+        }); //为每个咖啡店创建信息窗体
+
+        var infoWindow = new AMap.InfoWindow({
+          content: this.cafes[i].name
+        });
+        this.infoWindows.push(infoWindow); //绑定点击时间到点标记对象，点击打开上面创建的信息窗体
+
+        marker.on('click', function () {
+          infoWindow.open(this.getMap(), this.getPosition());
         }); //将每个点标记放到点标记数组中
 
         this.markers.push(marker);
@@ -60723,6 +60745,39 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/config.JS":
+/*!***************************************!*\
+  !*** ./resources/assets/js/config.JS ***!
+  \***************************************/
+/*! exports provided: ROAST_CONFIG */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ROAST_CONFIG", function() { return ROAST_CONFIG; });
+var api_url = '';
+var app_url = '';
+var gaode_maps_js_api_key = 'e38f642a00e4039882ffdbc51d25df7d';
+
+switch ("development") {
+    case 'development':
+        api_url = 'http://roast.test/api/v1';
+        app_url = 'http://roast.test';
+        break;
+    case 'production':
+        api_url = 'http://roast.demo.waiting8.com/api/v1';
+        app_url = 'http://roast.demo.waiting8.com';
+        break;
+}
+
+const ROAST_CONFIG ={
+    API_URL:api_url,
+    APP_URL:app_url,
+    GAODE_MAPS_JS_API_KEY:gaode_maps_js_api_key
+}
+
+/***/ }),
+
 /***/ "./resources/assets/js/config.js":
 /*!***************************************!*\
   !*** ./resources/assets/js/config.js ***!
@@ -60734,20 +60789,24 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ROAST_CONFIG", function() { return ROAST_CONFIG; });
 var api_url = '';
+var app_url = '';
 var gaode_maps_js_api_key = 'e38f642a00e4039882ffdbc51d25df7d';
 
 switch ("development") {
   case 'development':
     api_url = 'http://roast.test/api/v1';
+    app_url = 'http://roast.test';
     break;
 
   case 'production':
     api_url = 'http://roast.demo.waiting8.com/api/v1';
+    app_url = 'http://roast.demo.waiting8.com';
     break;
 }
 
 var ROAST_CONFIG = {
   API_URL: api_url,
+  APP_URL: app_url,
   GAODE_MAPS_JS_API_KEY: gaode_maps_js_api_key
 };
 
