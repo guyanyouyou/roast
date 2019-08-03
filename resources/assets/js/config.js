@@ -1,4 +1,5 @@
 var api_url = '';
+var gaode_maps_js_api_key = 'e38f642a00e4039882ffdbc51d25df7d';
 
 switch (process.env.NODE_ENV) {
     case 'development':
@@ -11,4 +12,5 @@ switch (process.env.NODE_ENV) {
 
 export const ROAST_CONFIG ={
     API_URL:api_url,
+    GAODE_MAPS_JS_API_KEY:gaode_maps_js_api_key
 }

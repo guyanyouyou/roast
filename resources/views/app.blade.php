@@ -21,8 +21,7 @@
 <div id="app">
     <router-view></router-view>
 </div>
-
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=e38f642a00e4039882ffdbc51d25df7d"></script>
 <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-
 </body>
 </html>
