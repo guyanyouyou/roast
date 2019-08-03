@@ -1996,7 +1996,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    this.$store.dispatch('loadCafes');
+    this.$store.dispatch('loadCafes'); //this.$store.dispatch('loadBrewMethods');
   },
   computed: {
     // 获取cafes加载状态
@@ -2006,6 +2006,9 @@ __webpack_require__.r(__webpack_exports__);
     //获取cafes
     cafes: function cafes() {
       return this.$store.getters.getCafes;
+    },
+    brewMethods: function brewMethods() {
+      return this.$store.getters.brewMethods;
     }
   }
 });
@@ -2041,6 +2044,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.$store.dispatch('loadCafes');
     this.$store.dispatch('loadUser');
+    this.$store.dispatch('loadBrewMethods');
   }
 });
 
@@ -60463,6 +60467,25 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./resources/assets/js/api/brewMethod.js":
+/*!***********************************************!*\
+  !*** ./resources/assets/js/api/brewMethod.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _config_JS__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../config.JS */ "./resources/assets/js/config.JS");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  getBrewMethods: function getBrewMethods() {
+    return axios.get(_config_JS__WEBPACK_IMPORTED_MODULE_0__["ROAST_CONFIG"].API_URL + '/brew-methods');
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/assets/js/api/cafe.js":
 /*!*****************************************!*\
   !*** ./resources/assets/js/api/cafe.js ***!
@@ -60808,6 +60831,56 @@ var ROAST_CONFIG = {
   API_URL: api_url,
   APP_URL: app_url,
   GAODE_MAPS_JS_API_KEY: gaode_maps_js_api_key
+};
+
+/***/ }),
+
+/***/ "./resources/assets/js/modules/brewMethods.js":
+/*!****************************************************!*\
+  !*** ./resources/assets/js/modules/brewMethods.js ***!
+  \****************************************************/
+/*! exports provided: brewMethods */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "brewMethods", function() { return brewMethods; });
+/* harmony import */ var _api_brewMethod_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api/brewMethod.js */ "./resources/assets/js/api/brewMethod.js");
+
+var brewMethods = {
+  state: {
+    brewMethods: [],
+    brewMethodsLoadStatus: 0
+  },
+  actions: {
+    loadBrewMethods: function loadBrewMethods(_ref) {
+      var commit = _ref.commit;
+      commit('setBrewMethodsLoadStatus', 1);
+      _api_brewMethod_js__WEBPACK_IMPORTED_MODULE_0__["default"].getBrewMethods().then(function (response) {
+        commit('setBrewMethods', response.data);
+        commit('setBrewMethodsLoadStatus', 2);
+      })["catch"](function () {
+        commit('setBrewMethods', []);
+        commit('setBrewMethodsLoadStatus', 3);
+      });
+    }
+  },
+  mutations: {
+    setBrewMethodsLoadStatus: function setBrewMethodsLoadStatus(state, status) {
+      state.brewMethodsLoadStatus = status;
+    },
+    setBrewMethods: function setBrewMethods(state, brewMethods) {
+      state.brewMethods = brewMethods;
+    }
+  },
+  getters: {
+    getBrewMethods: function getBrewMethods(state) {
+      return state.brewMethods;
+    },
+    getBrewMethodsLoadStatus: function getBrewMethodsLoadStatus(state) {
+      return state.brewMethodsLoadStatus;
+    }
+  }
 };
 
 /***/ }),
@@ -61457,6 +61530,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_cafes_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/cafes.js */ "./resources/assets/js/modules/cafes.js");
 /* harmony import */ var _modules_users_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/users.js */ "./resources/assets/js/modules/users.js");
+/* harmony import */ var _modules_brewMethods_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/brewMethods.js */ "./resources/assets/js/modules/brewMethods.js");
 __webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").polyfill();
 
 
@@ -61464,10 +61538,12 @@ __webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-prom
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
     cafes: _modules_cafes_js__WEBPACK_IMPORTED_MODULE_2__["cafes"],
-    users: _modules_users_js__WEBPACK_IMPORTED_MODULE_3__["users"]
+    users: _modules_users_js__WEBPACK_IMPORTED_MODULE_3__["users"],
+    brewMethods: _modules_brewMethods_js__WEBPACK_IMPORTED_MODULE_4__["brewMethods"]
   }
 }));
 

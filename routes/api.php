@@ -49,6 +49,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
      | Description:    Adds a new cafe to the application
     */
     Route::post('/cafes', 'API\CafesController@postNewCafe');
+
+    Route::get('/brew-methods','API\BrewMethodsController@getBrewMethods');
 });
 /*Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::get('/user', function( Request $request ){

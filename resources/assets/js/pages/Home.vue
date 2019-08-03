@@ -14,6 +14,7 @@
     export default {
         created() {
             this.$store.dispatch('loadCafes');
+            //this.$store.dispatch('loadBrewMethods');
         },
         computed:{
             // 获取cafes加载状态
@@ -23,6 +24,9 @@
             //获取cafes
             cafes(){
                 return this.$store.getters.getCafes;
+            },
+            brewMethods(){
+                return this.$store.getters.brewMethods;
             }
         }
     }
