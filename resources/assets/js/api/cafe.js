@@ -15,5 +15,11 @@ export default {
             description:description,
             roaster:roaster,
         })
+    },
+    postLikeCafe:function(cafeID){
+        return axios.post(ROAST_CONFIG.API_URL+'/cafes/'+cafeID+'/like');
+    },
+    deleteLikeCafe:function (cafeID) {
+        return axios.delete(ROAST_CONFIG.API_URL+/cafes/+cafeID+'/like');
     }
 }
