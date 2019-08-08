@@ -56,6 +56,13 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::post('/cafes/{id}/like','API\CafesController@postLikeCafe');
     //取消喜欢咖啡店
     Route::delete('/cades/{id}/like','API\CafesController@deleteLikeCafe');
+
+    //添加标签到指定咖啡店
+    Route::post('/cafes/{id}/tags','API\CafesController@postAddTags');
+    //删除指定咖啡店上的指定标签
+    Route::delete('/cafes/{id}/tags/{tagID}','API\CafesController@deleteCafeTag');
+    //标签自动完成路由
+    Route::get('tags','API\TagsController@getTags');
 });
 /*Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::get('/user', function( Request $request ){
