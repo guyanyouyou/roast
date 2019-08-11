@@ -14,7 +14,7 @@ class BrewMethodsSeeder extends Seeder
     {
         //
         DB::table('brew_methods')->insert([
-            [
+            [TagsController.php
                 'method'=>'Hario V60 Dripper',
                 'created_at'=>\Carbon\Carbon::now(),
                 'updated_at'=> \Carbon\Carbon::now()
