@@ -8,13 +8,13 @@
             </div>
             <input type="text" v-bind:id="unique" class="new-tag-input" v-model="currentTag" v-on:keyup="searchTags"
                     v-on:keyup.enter="addNewTag" v-on:keydown.up="changeIndex('up')" v-on:keydown.delete="handleDelete"
-                    v-on:keydown.down="changeIndex('down')" v-bind:class="{'dulicate-warning':duplicateFlag}"
+                    v-on:keydown.down="changeIndex('down')" v-bind:class="{'duplicate-warning':duplicateFlag}"
                     placeholder="Add a tag">
         </div>
         <div class="tag-autocomplete" v-show="showAutocomplete">
             <div class="tag-search-result" v-for="(tag,key) in tagSearchResults"
                 v-bind:class="{'selected-search-index':searchSelectedIndex === key}"
-                 v-on:click="selectTag(tag.tag)">{{tag.tag}}
+                 v-on:click="selectTag(tag.name)">{{tag.name}}
             </div>
         </div>
     </div>
@@ -48,6 +48,7 @@
         },
         computed:{
             showAutocomplete(){
+                console.log(this.tagSearchResults);
                 return this.tagSearchResults.length !== 0;
             }
         },
@@ -108,6 +109,9 @@
                             search:this.currentTag
                         }
                     }).then(function (response) {
+                        window.console.log(1222);
+                        console.log(response.data);
+                        console.log(this.tagSearchResults);
                         this.tagSearchResults = response.data;
                     }.bind(this));
                 }

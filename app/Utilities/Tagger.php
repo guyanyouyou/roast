@@ -7,6 +7,7 @@ use App\Models\Tag;
 class Tagger
 {
     public static function tagCafe($cafe,$tags,$userId){
+        //dump($cafe);
         //遍历标签数据，分别存储每个标签，并建立其余咖啡店的关联
         foreach ($tags as $tag){
             $name = trim($tag);
@@ -15,7 +16,7 @@ class Tagger
             $newCafeTag->name = $name;
             $newCafeTag->save();
             //将标签和咖啡店关联起来
-            $cafe->tages()->syncWithoutDetaching([$newCafeTag->id => ['user_id'=>$userId]]);
+            $cafe->tags()->syncWithoutDetaching([$newCafeTag->id => ['user_id'=>$userId]]);
         }
     }
 }

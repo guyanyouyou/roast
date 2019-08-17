@@ -91,7 +91,7 @@ class CafesController extends Controller
                 $cafe->save();
 
                 $cafe->brewMethods()->sync($locations[$i]['methodsAvailable']);
-                Tagger::tagCafe($cafe,$locations[$i]['tags'],$request->user()-id);
+                Tagger::tagCafe($cafe,$locations[$i]['tags'],$request->user()->id);
                 array_push($addedCafes,$cafe->toArray());
             }
         }
@@ -103,6 +103,7 @@ class CafesController extends Controller
         $cafe = Cafe::where('id','=',$id)
             ->with('brewMethods')
             ->with('userLike')
+            ->with('tags')
             ->first();
         return response()->json($cafe);
     }

@@ -53,6 +53,28 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss">
+    @import '~@/abstracts/_variables.scss';
 
+    span.toggle-like {
+        display: block;
+        text-align: center;
+        margin-top: 30px;
+
+        span.like-toggle {
+            display: inline-block;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 20px;
+            cursor: pointer;
+
+            &.like {
+                color: $dark-success;
+            }
+
+            &.un-like {
+                color: $dark-failure;
+            }
+        }
+    }
 </style>
