@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\DB;
 class CafesController extends Controller
 {
     public function getCafes(){
-        $cafes = Cafe::with('brewMethods')->get();
+        $cafes = Cafe::with('brewMethods')
+                    ->with(['tags'=>function($query){
+                        $query->select('name');
+                    }])->get();
         return response()->json($cafes);
     }
 

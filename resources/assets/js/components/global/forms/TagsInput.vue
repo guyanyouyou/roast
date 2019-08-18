@@ -23,6 +23,7 @@
 <script>
     import {ROAST_CONFIG} from "../../../config.js";
     import {EventBus} from "../../../event-bus";
+    import _ from 'lodash';
 
     export default {
         props:['unique'],
@@ -101,21 +102,19 @@
                 }
             },
             //根据搜索词查询后端自动提示 API接口并将结果展示到下拉列表
-            searchTags(){
-                if (this.currentTag.length > 2 && !this.pauseSearch){
+            searchTags: _.debounce(function(e){
+                if (this.currentTag.length > 2 && !this.pauseSearch) {
                     this.searchSelectedIndex = -1;
-                    axios.get(ROAST_CONFIG.API_URL + '/tags',{
-                        params:{
-                            search:this.currentTag
+                    axios.get(ROAST_CONFIG.API_URL + '/tags', {
+                        params: {
+                            search: this.currentTag
                         }
                     }).then(function (response) {
-                        window.console.log(1222);
-                        console.log(response.data);
-                        console.log(this.tagSearchResults);
                         this.tagSearchResults = response.data;
                     }.bind(this));
                 }
-            },
+            },300),
+
             //检查标签是否重复
             checkDuplicates(tagName){
                 tagName = this.cleanTagName(tagName);
@@ -162,7 +161,7 @@
         position: relative;
 
         div.tags-input {
-            display: block;
+            display: table;
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
             width: 100%;
