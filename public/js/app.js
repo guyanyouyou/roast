@@ -1937,6 +1937,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2009,6 +2045,8 @@ __webpack_require__.r(__webpack_exports__);
 
       }); //遍历所有咖啡店并为每个咖啡店创建点标记
 
+      var infoWindow = new AMap.InfoWindow();
+
       for (var i = 0; i < this.cafes.length; i++) {
         //通过高德地图API为每个咖啡店创建点标记并设置经纬度：
         var marker = new AMap.Marker({
@@ -2019,18 +2057,24 @@ __webpack_require__.r(__webpack_exports__);
             'cafe': this.cafes[i]
           },
           map: this.map
-        }); //为每个咖啡店创建信息窗体
+        }); //自定义信息窗体
 
-        var infoWindow = new AMap.InfoWindow({
-          content: this.cafes[i].name
-        });
-        this.infoWindows.push(infoWindow); //绑定点击时间到点标记对象，点击打开上面创建的信息窗体
+        var contentString = '<div class ="cafe-info-window">' + '<div class="cafe-name">' + this.cafes[i].name + this.cafes[i].location_name + '</div>' + '<div class="cafe-address">' + '<span class="street">' + this.cafes[i].address + '</span>' + '<span class="city">' + this.cafes[i].city + '</span>' + '<span class="state">' + this.cafes[i].state + '</span>' + '<span class="zip">' + this.cafes[i].zip + '</span>' + '<a href="/#/cafes/' + this.cafes[i].id + '">Visit</a>' + '</div>' + '</div>';
+        marker.content = contentString; // //为每个咖啡店创建信息窗体
+        // var infoWindow = new AMap.InfoWindow({
+        //     content:this.cafes[i].name
+        // });
+        // this.infoWindows.push(infoWindow);
+        //绑定点击时间到点标记对象，点击打开上面创建的信息窗体
 
-        marker.on('click', function () {
-          infoWindow.open(this.getMap(), this.getPosition());
-        }); //将每个点标记放到点标记数组中
+        marker.on('click', mapClick); //将每个点标记放到点标记数组中
 
         this.markers.push(marker);
+      }
+
+      function mapClick(mapEvent) {
+        infoWindow.setContent(mapEvent.target.content);
+        infoWindow.open(this.getMap(), this.getPosition());
       } //将所有点标记显示到地图上
 
 
@@ -3265,7 +3309,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "div#cafe-map-container {\n  position: absolute;\n  top: 50px;\n  left: 0px;\n  right: 0px;\n  bottom: 50px;\n}\ndiv#cafe-map-container div#cafe-map {\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  right: 0px;\n  bottom: 0px;\n}", ""]);
+exports.push([module.i, "div#cafe-map-container {\n  position: absolute;\n  top: 50px;\n  left: 0px;\n  right: 0px;\n  bottom: 50px;\n}\ndiv#cafe-map-container div#cafe-map {\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  right: 0px;\n  bottom: 0px;\n}\ndiv#cafe-map-container div.cafe-info-window div.cafe-name {\n  display: block;\n  text-align: center;\n  color: #7F5F2A;\n  font-family: \"Josefin Sans\", sans-serif;\n}\ndiv#cafe-map-container div.cafe-info-window div.cafe-address {\n  display: block;\n  text-align: center;\n  margin-top: 5px;\n  color: #A0A0A0;\n  font-family: \"Lato\", sans-serif;\n}\ndiv#cafe-map-container div.cafe-info-window div.cafe-address span.street {\n  font-size: 14px;\n  display: block;\n}\ndiv#cafe-map-container div.cafe-info-window div.cafe-address span.city {\n  font-size: 12px;\n}\ndiv#cafe-map-container div.cafe-info-window div.cafe-address span.state {\n  font-size: 12px;\n}\ndiv#cafe-map-container div.cafe-info-window div.cafe-address span.zip {\n  font-size: 12px;\n  display: block;\n}\ndiv#cafe-map-container div.cafe-info-window div.cafe-address a {\n  color: #FFBE54;\n  font-weight: bold;\n}", ""]);
 
 // exports
 
@@ -63122,6 +63166,12 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   router: _routes_js__WEBPACK_IMPORTED_MODULE_1__["default"],
   store: _store_js__WEBPACK_IMPORTED_MODULE_2__["default"]
 }).$mount('#app');
+ga('set', 'page', _routes_js__WEBPACK_IMPORTED_MODULE_1__["default"].currentRoute.path);
+ga('send', 'pageview');
+_routes_js__WEBPACK_IMPORTED_MODULE_1__["default"].afterEach(function (to, from) {
+  ga('set', 'page', to.path);
+  ga('send', 'pageview');
+});
 
 /***/ }),
 
