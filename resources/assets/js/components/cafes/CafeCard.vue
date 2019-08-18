@@ -1,6 +1,6 @@
 <template>
     <div class="large-3 medium-4 small-6 cell cafe-card-container" v-show="show">
-        <router-link :to="{naame:'cafe',params:{id:cafe.id}}">
+        <router-link :to="{name:'cafe',params:{id:cafe.id}}">
             <div class="cafe-card">
                 <span class="title">{{cafe.name}}</span>
                 <span class="address">

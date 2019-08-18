@@ -23,6 +23,7 @@ export default new VueRouter({
     routes: [
         {
             path:'/',
+            redirect:{name:'home'},
             name:'layout',
             components:Vue.component('Home',require('./pages/Layout.vue')),
             children:[
