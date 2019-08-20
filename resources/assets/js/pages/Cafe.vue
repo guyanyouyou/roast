@@ -136,7 +136,7 @@
             },
             //从vuex中获取用户加载状态
             userLoadStatus(){
-                return this.$store.getters.getUserLoadStatus;
+                return this.$store.getters.getUserLoadStatus();
             },
             //从vuex中获取用户信息
             user(){

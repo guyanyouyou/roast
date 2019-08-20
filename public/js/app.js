@@ -2505,7 +2505,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     userLoadStatus: function userLoadStatus() {
-      return this.$store.getters.getUserLoadStatus;
+      return this.$store.getters.getUserLoadStatus();
     },
     user: function user() {
       return this.$store.getters.getUser;
@@ -2850,7 +2850,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     //从vuex中获取用户加载状态
     userLoadStatus: function userLoadStatus() {
-      return this.$store.getters.getUserLoadStatus;
+      return this.$store.getters.getUserLoadStatus();
     },
     //从vuex中获取用户信息
     user: function user() {
@@ -2984,7 +2984,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     //从vuex中获取用户加载状态
     userLoadStatus: function userLoadStatus() {
-      return this.$store.getters.getUserLoadStatus;
+      return this.$store.getters.getUserLoadStatus();
     },
     //从vuex中获取用户信息
     user: function user() {
@@ -63423,13 +63423,13 @@ if (token) {
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   router: _routes_js__WEBPACK_IMPORTED_MODULE_1__["default"],
   store: _store_js__WEBPACK_IMPORTED_MODULE_2__["default"]
-}).$mount('#app');
-ga('set', 'page', _routes_js__WEBPACK_IMPORTED_MODULE_1__["default"].currentRoute.path);
-ga('send', 'pageview');
-_routes_js__WEBPACK_IMPORTED_MODULE_1__["default"].afterEach(function (to, from) {
-  ga('set', 'page', to.path);
-  ga('send', 'pageview');
-});
+}).$mount('#app'); // ga('set', 'page', router.currentRoute.path);
+// ga('send', 'pageview');
+//
+// router.afterEach((to, from) => {
+//     ga('set', 'page', to.path);
+//     ga('send', 'pageview');
+// });
 
 /***/ }),
 
@@ -64821,10 +64821,9 @@ var users = {
      Returns the user load status.
      */
     getUserLoadStatus: function getUserLoadStatus(state) {
-      /*return function(){
-          return state.userLoadStatus;
-      }*/
-      return state.userLoadStatus;
+      return function () {
+        return state.userLoadStatus;
+      }; //return state.userLoadStatus;
     },
 
     /*
@@ -65238,6 +65237,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store.js */ "./resources/assets/js/store.js");
 /*
  |-------------------------------------------------------------------------------
  | routes.js
@@ -65250,14 +65250,48 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
+
 /**
  * Extends Vue to use Vue Router
  */
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+function requireAuth(to, from, next) {
+  console.log('requireAuth');
+  console.log(_store_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters.getUserLoadStatus());
+
+  function proceed() {
+    console.log('proceed'); //如果用户信息已经加载并且不为空则说明该用户已登录，可以继续访问路由，否则跳转到首页
+    //这个功能雷系Laravel中的auth中间件
+
+    if (_store_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters.getUserLoadStatus() === 2) {
+      if (_store_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters.getUser != '') {
+        next();
+      } else {
+        next('/home');
+      }
+    }
+  }
+
+  if (_store_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters.getUserLoadStatus() !== 2) {
+    //如果用户信息未加载完毕则先加载
+    _store_js__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch('loadUser'); //监听用户信息加载状态，加载完成后调用proceed方法继续后续操作
+
+    _store_js__WEBPACK_IMPORTED_MODULE_2__["default"].watch(_store_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters.getUserLoadStatus, function () {
+      if (_store_js__WEBPACK_IMPORTED_MODULE_2__["default"].getters.getUserLoadStatus() === 2) {
+        proceed();
+      }
+    });
+  } else {
+    //如果用户信息加载完毕直接调用proceed方法
+    proceed();
+  }
+}
 /**
  * Makes a new VueRouter that we will use to run all of the routes for the app.
  */
+
 
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: [{
@@ -65278,7 +65312,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
     }, {
       path: '/cafes/new',
       name: 'newcafe',
-      components: vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('NewCafe', __webpack_require__(/*! ./pages/NewCafe.vue */ "./resources/assets/js/pages/NewCafe.vue"))
+      components: vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('NewCafe', __webpack_require__(/*! ./pages/NewCafe.vue */ "./resources/assets/js/pages/NewCafe.vue")),
+      beforeEnter: requireAuth
     }, {
       path: '/cafes/:id',
       name: 'cafe',
