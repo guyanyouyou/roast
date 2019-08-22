@@ -14,7 +14,7 @@ export const users = {
     state: {
         user: {},
         userLoadStatus: 0,
-        userUpdateStatus: 0
+        userUpdateStatus: 0,
     },
 
     /*
@@ -41,7 +41,7 @@ export const users = {
         editUser( { commit, state, dispatch }, data ){
             commit( 'setUserUpdateStatus', 1 );
 
-            UserAPI.putUpdateUser( data.public_visibility, data.favorite_coffee, data.flavor_notes, data.city, data.state )
+            UserAPI.putUpdateUser( data.profile_visibility, data.favorite_coffee, data.flavor_notes, data.city, data.state )
                 .then( function( response ){
                     commit( 'setUserUpdateStatus', 2 );
                     dispatch( 'loadUser' );

@@ -79,7 +79,13 @@ export default new VueRouter({
                 {
                     path: '/cafes/:id',
                     name: 'cafe',
-                    components: Vue.component( 'Cafe', require( './pages/Cafe.vue' ) )
+                    components: Vue.component( 'Cafe', require( './pages/Cafe.vue' )),
+                },
+                {
+                    path:'profile',
+                    name:'profile',
+                    components: Vue.component('Profile',require('./pages/Profile.vue' )),
+                    beforeEnter:requireAuth
                 }
             ]
         }

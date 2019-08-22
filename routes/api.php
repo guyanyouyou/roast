@@ -21,6 +21,7 @@ Route::group(['prefix'=>'v1'],function(){
     Route::get('tags','API\TagsController@getTags');
     //获取用户信息
     Route::get('/user', 'API\UsersController@getUser');
+    Route::put('/user','API\UsersController@putUpdateUser');
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
